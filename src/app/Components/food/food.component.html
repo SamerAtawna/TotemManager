@@ -1,0 +1,385 @@
+<section>
+  <div class="container">
+    <div class="center d-flex justify-content-center">
+      <div class="btn-group mt-4" style="direction: ltr" role="group" aria-label="Basic example" *ngFor="let rest of resturants">
+        <a class="btn btn-primary" [ngClass]="{ active: activeRest == rest.resid }" (click)="setResturant(rest.resid)" aria-current="page">{{ rest.name }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- food menu -->
+<section>
+  <div class="container">
+    <!-- meal selection drop down  -->
+    <div class="dropdown" *ngIf="!loadingProducts">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">מנות</button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <ng-container *ngFor="let item of menuItems">
+          <li>
+            <a class="dropdown-item" (click)="setProduct(item)">{{ item.name }}</a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+    <div class="spinner-border" *ngIf="loadingProducts" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</section>
+<!-- product details -->
+<section *ngIf="selectedProduct != null">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-5">
+        <div class="row">
+          <div class="col">
+            <h3>{{ selectedProduct.name }}</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">שם מנה</label>
+              <input type="text" [(ngModel)]="selectedProduct.name" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">מחיר</label>
+              <input type="number" [(ngModel)]="selectedProduct.Price" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">תיאור</label>
+              <textarea [(ngModel)]="selectedProduct.Description" class="form-control text-start" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="form-check">
+              <input class="form-check-input" [(ngModel)]="selectedProduct.IsOneAddition" type="checkbox" id="flexCheckChecked" />
+              <label class="form-check-label" for="flexCheckChecked"> תוספת אחת </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="form-check">
+              <input class="form-check-input" [(ngModel)]="selectedProduct.IsBus" type="checkbox" id="flexCheckChecked" />
+              <label class="form-check-label" for="flexCheckChecked"> עסקית </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="form-check">
+              <input class="form-check-input" [(ngModel)]="selectedProduct.IsAvaliable" type="checkbox" id="flexCheckChecked" />
+              <label class="form-check-label" for="flexCheckChecked"> זמינה </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">הודעת בועה</label>
+              <textarea [(ngModel)]="selectedProduct.PopMessage" class="form-control text-start" id="exampleFormControlTextarea1" rows="1"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">2 הודעת בועה</label>
+              <textarea [(ngModel)]="selectedProduct.PopMessage2" class="form-control text-start" id="exampleFormControlTextarea1" rows="1"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"> Alias - שם תצוגה (להדפסה)</label>
+              <input type="text" [(ngModel)]="selectedProduct.Alias" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">מספר תוספות</label>
+              <input type="number" [(ngModel)]="selectedProduct.numOfAdditions" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">מספר רטבים</label>
+              <input type="number" [(ngModel)]="selectedProduct.numOfSauce" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">מספר ארוחות</label>
+              <input type="number" [(ngModel)]="selectedProduct.numOfMeal" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">כמות מנה ראשונה</label>
+              <input type="number" [(ngModel)]="selectedProduct.numOfFirstMeal" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">כמות לחם</label>
+              <input type="number" [(ngModel)]="selectedProduct.numOfBread" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">כמות תוספות</label>
+              <input type="number" [(ngModel)]="selectedProduct.numOfExtra" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">הודעת תוספת </label>
+              <textarea [(ngModel)]="selectedProduct.additionMessage" class="form-control text-start" id="exampleFormControlTextarea1" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="form-check">
+              <input class="form-check-input" [(ngModel)]="selectedProduct.IsBurger" type="checkbox" id="flexCheckChecked" />
+              <label class="form-check-label" for="flexCheckChecked"> בורגר </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="row">
+          <div class="col-6">
+            <img src="http://localhost:8080/pics/{{ selectedProduct.pic }}" class="img-fluid" />
+          </div>
+          <div class="col-6">
+            <div class="btn btn-primary" (click)="fileDialog()">העלה תמונה</div>
+            <br />
+            <div class="btn btn-primary mt-2" (click)="newProduct()">מנה חדשה +</div>
+            <br />
+            <div class="btn btn-primary mt-2" (click)="newAddition()">תוספת חדשה +</div>
+            <br />
+            <div class="btn btn-primary mt-2" (click)="saveProduct()">שמור</div>
+            <br />
+            <input type="file" id="" (change)="uploadImage(selectedProduct)" style="visibility: hidden" #fileInput />
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <h2>תוספות</h2>
+          </div>
+          <div class="col">
+            <div class="card mb-2 p-3" *ngFor="let item of additionals">
+              <div class="row">
+                <div class="col props">
+                  <button type="button" class="btn btn-secondary float-end" (click)="activeAdditionTemp(item.addition)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    טמפלט
+                  </button>
+
+                  <h5>
+                    {{ item.name }}
+                  </h5>
+                  <!-- image icon bs -->
+    
+
+                  <label for="exampleFormControlInput1" class="form-label">שם מנה</label>
+                  <input type="text" [(ngModel)]="item.name" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+                  <!-- <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "ball-spin-fade" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner> -->
+
+                  <div class="form-check mb-1 mt-2">
+                    <input class="form-check-input" [(ngModel)]="item.IsMeal" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> מנה </label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.IsFirstMeal" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> מנה ראשונה </label>
+                  </div>
+                  <div class="mb-1">
+                    <label for="exampleFormControlInput1" class="form-label">מספר העדפות</label>
+                    <input type="number" [(ngModel)]="item.NumberOfChoices" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+                  </div>
+                  <div class="mb-1">
+                    <label for="exampleFormControlInput1" class="form-label">תמונה</label>
+                    <input type="text" [(ngModel)]="item.Image" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+                    <div class="btn btn-primary" data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="activeAddImage(item.addition)">בחר תמונה</div>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.IsFavorite" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> העדפה</label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.IsAvaliable" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> זמינה </label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.Checked" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> מסומנת</label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.IsSauce" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> רוטב</label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.isLastMeal" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> מנה אחרונה </label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.isBread" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> לחם </label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.extraAddition" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> תוספת נוספת </label>
+                  </div>
+                  <div class="mb-1">
+                    <label for="exampleFormControlInput1" class="form-label">הודעה</label>
+                    <input type="text" [(ngModel)]="item.additionMessage" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.haveException" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> החרגה</label>
+                  </div>
+                  <div class="form-check mb-1">
+                    <label for="exampleFormControlInput1" class="form-label">חוסם תוספת</label>
+                    <input type="text" [(ngModel)]="item.AdditionBlock" class="form-control text-start" id="exampleFormControlInput1" placeholder="" />
+                  </div>
+                  <div class="form-check mb-1">
+                    <input class="form-check-input" [(ngModel)]="item.IsTop" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked"> מעל </label>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <img class="card-img-top float-end img-fluid w-50" src="http://localhost:8080/pics/{{ item.Image }}" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Button trigger modal -->
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">תבניות</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div class="card p-3">
+              <h6>תוספת - מספר בחירות</h6>
+              <img src="../../../assets/addition-multiple.jpg" (click)="setTemplate('addition-multiple')" data-bs-dismiss="modal" class="img-fluid" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card p-3">
+              <h6>עסקית - מנה עיקרית</h6>
+              <img src="../../../assets/business-addition-main.jpg" (click)="setTemplate('business-addition-main')" data-bs-dismiss="modal" class="img-fluid" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card p-3">
+              <h6>עסקית - מנה ראשונה</h6>
+              <img src="../../../assets/business-first-meal.jpg" (click)="setTemplate('business-first-meal')" data-bs-dismiss="modal" class="img-fluid" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card p-3">
+              <h6>עסקית - מנה אחרונה</h6>
+              <img src="../../../assets/business-last-addition.jpg" (click)="setTemplate('business-last-addition')" data-bs-dismiss="modal" class="img-fluid" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card p-3">
+              <h6>העדפות - מספר בחירות</h6>
+              <img src="../../../assets/favorites-multiple.jpg" (click)="setTemplate('favorites-multiple')" data-bs-dismiss="modal" class="img-fluid w-25" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card p-3">
+              <h6>רטבים - מספר בחירות</h6>
+              <img src="../../../assets/sauce-multiple.jpg" (click)="setTemplate('sauce-multiple')" data-bs-dismiss="modal" class="img-fluid w-25" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="card p-3">
+              <h6>תוספת - בחירה אחת</h6>
+              <img src="../../../assets/template-one-radio.jpg" (click)="setTemplate('template-one-radio')" data-bs-dismiss="modal" class="img-fluid" />
+            </div>
+          </div>
+        </div>
+        <div class="row"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">בטל</button>
+        <button type="button" class="btn btn-primary">עדכן</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal images -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">בחר תמונה</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <ng-container *ngFor="let image of additionImages">
+            <div class="col-3">
+              <img src="http://localhost:8080/pics/{{ image }}" (click)="setAdditionImage(image)" data-bs-dismiss="modal" class="img-fluid" />
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
